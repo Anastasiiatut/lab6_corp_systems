@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+option csharp_namespace = "Lab6_GRPC";
+
+package library;
+
+service LibraryService {
+  rpc GetActiveLoans (Empty) returns (ActiveLoanList);
+  rpc GetBooks (Empty) returns (BookList);
+  rpc GetAllLoans (Empty) returns (BookLoanList);
+  rpc GetReaders (Empty) returns (ReaderList);
+
+  rpc ReturnBook (ReturnBookRequest) returns (BookLoanSchema);
+  rpc AddLoan (AddLoanRequest) returns (BookLoanSchema);
+  rpc CreateBook (CreateBookRequest) returns (BookSchema);
+  rpc CreateReader (CreateReaderRequest) returns (ReaderSchema);
+}
+
+message Empty {}
+
+
+message ReturnBookRequest {
+  int32 id = 1;
+}
+
+message AddLoanRequest {
+  int32 readerID = 1;
+  int32 bookID = 2;
+}
+
+message CreateBookRequest {
+  string title = 1;
+  string author = 2;
+  double price = 3;
+}
+
+message CreateReaderRequest {
+  string lastName = 1;
+  string firstName = 2;
+  optional string middleName = 3;
+  optional string address = 4;
+  optional string phone = 5;
+  optional string dob = 6;
+  string card = 7;
+}
+
+message ActiveLoanSchema {
+  int32 loanID = 1;
+  string readerName = 2;
+  string title = 3;
+  string author = 4;
+  string borrowDate = 5;
+}
+
+message BookSchema {
+  int32 bookID = 1;
+  string title = 2;
+  string author = 3;
+  double price = 4;
+}
+
+message BookLoanSchema {
+  int32 loanID = 1;
+  string readerName = 2;
+  string title = 3;
+  string borrowDate = 4;
+  optional string returnDate = 5;
+}
+
+message ReaderSchema {
+  int32 readerID = 1;
+  string lastName = 2;
+  optional string middleName = 3;
+  string firstName = 4;
+  optional string homeAddress = 5;
+  optional string phoneNumber = 6;
+  optional string dateOfBirth = 7;
+  string libraryCardNumber = 8;
+}
+
+message ActiveLoanList {
+  repeated ActiveLoanSchema items = 1;
+}
+
+message BookList {
+  repeated BookSchema items = 1;
+}
+
+message BookLoanList {
+  repeated BookLoanSchema items = 1;
+}
+
+message ReaderList {
+  repeated ReaderSchema items = 1;
+}
